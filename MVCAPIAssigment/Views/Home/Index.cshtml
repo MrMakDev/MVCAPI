@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ASP.NET Web API</title>
+    <link href="../../Content/Site.css" rel="stylesheet" />
+    
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () { });
+            function find() {
+                var id = $('#tweetKey').val();
+                $.getJSON("/api/Values/?id=" + id,
+                    function (data) {
+
+                        $('#Tweets').html(buildList(data, false));
+                    })
+                .fail(
+                    function (jqXHR, textStatus, err) {
+                        $('#Tweets').html('Error: ' + err);
+                    });
+            }
+
+            function buildList(data, isSub) {
+                
+                var html = (isSub) ? '<div>' : ''; // Wrap with div if true
+                html += '<ul>';
+                for (item in data) {
+                    html += '<li>';
+                    html += data[item];
+                    html += '</li>';
+                }
+                html += '</ul>';
+                html += (isSub) ? '</div>' : '';
+                return html;
+            }
+
+
+        </script>
+
+</head>
+<body id="body" >
+    <div class="main-content">
+   
+        <div>
+            <label for="tweetskey">Search :</label>
+            <input type="text" id="tweetKey" size="5"/>
+            <input type="button" value="Search" onclick="find();" />
+            <div id="Tweets"> </div>
+
+        </div>
+    </div>
+</body>
+</html>
